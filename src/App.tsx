@@ -10,6 +10,7 @@ import Register from './components/Register';
 import RequireAuth from './components/RequireAuth';
 import Unautorized from './components/Unautorized';
 import { useProducts } from './hooks/products';
+import PersistLogin from './components/PersistLogin';
 
 const ROLES = {
   User: 2001,
@@ -29,12 +30,14 @@ function App() {
         <Route path="register" element={<Register />} />
         <Route path="unauthorized" element={<Unautorized />} />
 
-        <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-          <Route path="/" element={<Home />} />
-        </Route>
+        <Route element={<PersistLogin />}>
+          <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+            <Route path="/" element={<Home />} />
+          </Route>
 
-        <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-          <Route path="admin" element={<Admin />} />
+          <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+            <Route path="admin" element={<Admin />} />
+          </Route>
         </Route>
 
         {/* catch all */}

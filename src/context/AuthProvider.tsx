@@ -3,18 +3,25 @@ import { createContext, useState } from "react";
 import { IAuth, IAuthContext } from '../models';
 
 const AuthContext = createContext<IAuthContext>({
-    auth: {} as IAuth,
-    setAuth: ()=>{}
+    auth: {
+        user: {},
+        accessToken: ""  
+    },
+    // persist: "",
+    // setPersist: ()=>{}
 });
 
 export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const [auth, setAuth] = useState<IAuth>({
         user:{},
-        roles:[]
+        roles:[],
+        accessToken: ""
     });
 
+    const [persist, setPersist] = useState<string>(JSON.parse(localStorage.getItem("persist") || "") || false);
+
     return (
-        <AuthContext.Provider value={{ auth, setAuth}}>
+        <AuthContext.Provider value={{ auth, setAuth, persist, setPersist}}>
             {children}
         </AuthContext.Provider>
     )

@@ -3,6 +3,7 @@ import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from '../api/axios';
 import { AxiosError } from "axios";
+import { Link } from "react-router-dom";
 
 interface AuthResponse{
     data: any,
@@ -90,7 +91,7 @@ const Register = () => {
                 <section>
                     <h1>Success!</h1>
                     <p>
-                        <a href="#">Sign In</a>
+                        <Link to="/login" >Sign In</Link>
                     </p>
                 </section>
             ) : (

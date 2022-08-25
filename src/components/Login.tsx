@@ -3,21 +3,31 @@ import AuthContext from "../context/AuthProvider";
 
 import axios from '../api/axios';
 import { AxiosError } from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 const LOGIN_URL = '/auth';
 
+interface LocationState {
+    from: {
+      pathname: string;
+    };
+  }
+
 const Login = () => {
-    const { setAuth } = useContext(AuthContext);
+    const { setAuth, persist, setPersist } = useContext(AuthContext);
     const userRef = useRef<null | HTMLInputElement>(null);
     const errRef = useRef<null | HTMLParagraphElement>(null);
 
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
+    const { from: fromLocation } = location.state as LocationState;
+    const from = fromLocation?.pathname || "/"
+    // const from = location.state?.from?.pathname || "/";
 
     const [user, setUser] = useState<string>('');
     const [pwd, setPwd] = useState<string>('');
     const [errMsg, setErrMsg] = useState<string>('');
+    // const [check, toggleCheck] = useToggle('persist', false);
+
 
     useEffect(() => {
         userRef.current?.focus();
@@ -39,7 +49,6 @@ const Login = () => {
                 }
             );
             console.log(JSON.stringify(response?.data));
-            //console.log(JSON.stringify(response));
             const accessToken = response?.data?.accessToken;
             const roles = response?.data?.roles;
             setAuth({ user, pwd, roles, accessToken });
@@ -60,6 +69,14 @@ const Login = () => {
             errRef.current?.focus();
         }
     }
+
+    const togglePersist = () => {
+        setPersist((prev: boolean) => !prev);
+    }
+
+    useEffect(() => {
+        localStorage.setItem("persist", persist);
+    }, [persist])
 
     return (
         <section>
@@ -86,12 +103,20 @@ const Login = () => {
                     required
                 />
                 <button>Sign In</button>
+                <div className="persistCheck">
+                    <input
+                        type="checkbox"
+                        id="persist"
+                        onChange={togglePersist}
+                        checked={persist}
+                    />
+                    <label htmlFor="persist">Trust This Device</label>
+                </div>
             </form>
             <p>
                 Need an Account?<br />
                 <span className="line">
-                    {/*put router link here*/}
-                    <a href="#">Sign Up</a>
+                    <Link to="/register">Sign Up</Link>
                 </span>
             </p>
         </section>

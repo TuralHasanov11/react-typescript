@@ -14,9 +14,9 @@ export interface IProduct {
 export interface IAuth {
     user: Object,
     roles?: Array<number>,
+    accessToken: string,
 }
 
 export interface IAuthContext {
     auth: IAuth,
-    setAuth: Function
 }
