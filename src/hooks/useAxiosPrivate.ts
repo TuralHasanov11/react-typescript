@@ -1,4 +1,5 @@
-import { axiosPrivate } from "../api/axios";
+import { axiosPrivate, } from "../api/axios";
+import {AxiosError, AxiosResponse} from 'axios';
 import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken";
 import useAuth from "./useAuth";
@@ -15,12 +16,12 @@ const useAxiosPrivate = () => {
                     config.headers['Authorization'] = `Bearer ${auth?.accessToken}`;
                 }
                 return config;
-            }, (error) => Promise.reject(error)
+            }, (error: AxiosError) => Promise.reject(error)
         );
 
         const responseIntercept = axiosPrivate.interceptors.response.use(
-            response => response,
-            async (error) => {
+            (response: AxiosResponse) => response,
+            async (error: any) => {
                 const prevRequest = error?.config;
                 if (error?.response?.status === 403 && !prevRequest?.sent) {
                     prevRequest.sent = true;

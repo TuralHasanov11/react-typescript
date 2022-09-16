@@ -12,15 +12,13 @@ import Unautorized from './components/Unautorized';
 import { useProducts } from './hooks/products';
 import PersistLogin from './components/PersistLogin';
 
-const ROLES = {
+const ROLES: {User: number, Editor: number, Admin: number} = {
   User: 2001,
   Editor: 1984,
   Admin: 5150
 }
 
 function App() {
-
-  const {loading, error, products} = useProducts()
 
   return (
     <Routes>

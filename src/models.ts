@@ -13,10 +13,6 @@ export interface IProduct {
 
 export interface IAuth {
     user: Object,
-    roles?: Array<number>,
+    roles: number[],
     accessToken: string,
-}
-
-export interface IAuthContext {
-    auth: IAuth,
 }
